@@ -117,19 +117,57 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"js/menu.js":[function(require,module,exports) {
-(function () {
-  var refs = {
-    openMenuBtn: document.querySelector("[data-menu-open]"),
-    closeMenuBtn: document.querySelector("[data-menu-close]"),
-    menu: document.querySelector("[data-menu]")
-  };
-  refs.openMenuBtn.addEventListener("click", toggleModal);
-  refs.closeMenuBtn.addEventListener("click", toggleModal);
+})({"js/scroll-up.js":[function(require,module,exports) {
+var goTopBtn = document.querySelector('.back_to_top');
+window.addEventListener('scroll', trackScroll);
+goTopBtn.addEventListener('click', backToTop);
 
-  function toggleModal() {
-    refs.menu.classList.toggle("is-open");
+function trackScroll() {
+  var scrolled = window.pageYOffset;
+  var coords = document.documentElement.clientHeight;
+
+  if (scrolled > coords) {
+    goTopBtn.classList.add('back_to_top-show');
   }
+
+  if (scrolled < coords) {
+    goTopBtn.classList.remove('back_to_top-show');
+  }
+}
+
+function backToTop() {
+  if (window.pageYOffset > 0) {
+    window.scrollBy(0, -80);
+    setTimeout(backToTop, 0);
+  }
+}
+
+(function () {
+  'use strict';
+
+  function trackScroll() {
+    var scrolled = window.pageYOffset;
+    var coords = document.documentElement.clientHeight;
+
+    if (scrolled > coords) {
+      goTopBtn.classList.add('back_to_top-show');
+    }
+
+    if (scrolled < coords) {
+      goTopBtn.classList.remove('back_to_top-show');
+    }
+  }
+
+  function backToTop() {
+    if (window.pageYOffset > 0) {
+      window.scrollBy(0, -80);
+      setTimeout(backToTop, 0);
+    }
+  }
+
+  var goTopBtn = document.querySelector('.back_to_top');
+  window.addEventListener('scroll', trackScroll);
+  goTopBtn.addEventListener('click', backToTop);
 })();
 },{}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -335,5 +373,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","js/menu.js"], null)
-//# sourceMappingURL=/menu.0c91648c.js.map
+},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","js/scroll-up.js"], null)
+//# sourceMappingURL=/scroll-up.77d4d8a5.js.map

@@ -117,20 +117,36 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"js/menu.js":[function(require,module,exports) {
-(function () {
-  var refs = {
-    openMenuBtn: document.querySelector("[data-menu-open]"),
-    closeMenuBtn: document.querySelector("[data-menu-close]"),
-    menu: document.querySelector("[data-menu]")
-  };
-  refs.openMenuBtn.addEventListener("click", toggleModal);
-  refs.closeMenuBtn.addEventListener("click", toggleModal);
+})({"js/ajax.js":[function(require,module,exports) {
+/* Article FructCode.com */
+$(document).ready(function () {
+  $("#btn").click(function () {
+    sendAjaxForm('result_form', 'ajax_form', 'action_ajax_form.php');
+    return false;
+  });
+});
 
-  function toggleModal() {
-    refs.menu.classList.toggle("is-open");
-  }
-})();
+function sendAjaxForm(result_form, ajax_form, url) {
+  $.ajax({
+    url: "../php/action_ajax_form.php",
+    //url страницы (action_ajax_form.php)
+    type: "POST",
+    //метод отправки
+    dataType: "html",
+    //формат данных
+    data: $("#" + ajax_form).serialize(),
+    // Сеарилизуем объект
+    success: function success(response) {
+      //Данные отправлены успешно
+      result = $.parseJSON(response);
+      $('#result_form').html('Имя: ' + result.name + '<br>Телефон: ' + result.phonenumber);
+    },
+    error: function error(response) {
+      // Данные не отправлены
+      $('#result_form').html('Ошибка. Данные не отправлены.');
+    }
+  });
+}
 },{}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -159,7 +175,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "6834" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "8614" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -335,5 +351,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","js/menu.js"], null)
-//# sourceMappingURL=/menu.0c91648c.js.map
+},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","js/ajax.js"], null)
+//# sourceMappingURL=/ajax.8681c9e4.js.map
