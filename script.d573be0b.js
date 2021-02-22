@@ -117,36 +117,50 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"js/ajax.js":[function(require,module,exports) {
-/* Article FructCode.com */
-$(document).ready(function () {
-  $("#btn").click(function () {
-    sendAjaxForm('result_form', 'ajax_form', 'action_ajax_form.php');
-    return false;
-  });
-});
-
-function sendAjaxForm(result_form, ajax_form, url) {
-  $.ajax({
-    url: "../php/action_ajax_form.php",
-    //url страницы (action_ajax_form.php)
-    type: "POST",
-    //метод отправки
-    dataType: "html",
-    //формат данных
-    data: $("#" + ajax_form).serialize(),
-    // Сеарилизуем объект
-    success: function success(response) {
-      //Данные отправлены успешно
-      result = $.parseJSON(response);
-      $('#result_form').html('Имя: ' + result.name + '<br>Телефон: ' + result.phonenumber);
-    },
-    error: function error(response) {
-      // Данные не отправлены
-      $('#result_form').html('Ошибка. Данные не отправлены.');
+})({"js/script.js":[function(require,module,exports) {
+$("#contact-form").submit(function () {
+  var form = $(this);
+  var error = false;
+  form.find("textaria, input").each(function () {
+    if ($(this).val() == "") {
+      error = true;
+      console.log("empty field: validation error");
     }
   });
-}
+
+  if (!error) {
+    var data = form.serialize();
+    $.ajax({
+      type: "POST",
+      url: "../mail.php",
+      dataType: "json",
+      data: data,
+      beforeSend: function beforeSend(data) {
+        form.find('button[type="submit"]').attr("disabled", "disabled");
+      },
+      success: function success(data) {
+        if (data["error"]) {
+          alert(data["error"]);
+          form.trigger("reset");
+          console.log("error data");
+        } else {
+          form[0].reset();
+          console.log("success");
+        }
+      },
+      error: function error(xhr, ajaxOptions, thrownError) {
+        alert(xhr.status);
+        alert(thrownError);
+      },
+      complete: function complete(data) {
+        form.find('button[type="submit"]').prop("disabled", false);
+        console.log("complete");
+      }
+    });
+  }
+
+  return false;
+});
 },{}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -175,7 +189,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "8614" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "4795" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -351,5 +365,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","js/ajax.js"], null)
-//# sourceMappingURL=/ajax.8681c9e4.js.map
+},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","js/script.js"], null)
+//# sourceMappingURL=/script.d573be0b.js.map
